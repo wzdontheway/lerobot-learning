@@ -10,3 +10,6 @@
 
 #3. 上传到GitHub（完成备份！）
 >>git push origin main
+
+# 查找真实脚本路径
+cat pyproject.toml | grep -A 10 "project.scripts"

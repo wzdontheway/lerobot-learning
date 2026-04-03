@@ -49,32 +49,20 @@ ls /dev/ttyUSB*
 ls /dev/ttyUSB*
 sudo chmod 666 /dev/ttyUSB*  #权限
 
-lerobot-calibrate --teleop.type=lerobot_teleoperator_bimanual_leader --teleop.left_arm_port=/dev/ttyUSB0 --teleop.right_arm_port=/dev/ttyUSB1 --teleop.id=bi_starai_violin_leader
+lerobot-calibrate     --teleop.type=lerobot_teleoperator_bimanual_leader  --teleop.left_arm_port=/dev/ttyUSB0  --teleop.right_arm_port=/dev/ttyUSB2  --teleop.id=bi_starai_violin_leader
 
-#同操作 从
-
-lerobot-calibrate \
---robot.type=lerobot_robot_bimanual_follower \
---robot.arm_name=starai_viola \
---robot.left_arm_port=/dev/ttyUSB1 \
---robot.right_arm_port=/dev/ttyUSB3 \
---robot.id=bi_starai_viola_follower
-
+lerobot-calibrate     --robot.type=lerobot_robot_bimanual_follower  --robot.arm_name=starai_cello  --robot.left_arm_port=/dev/ttyUSB1  --robot.right_arm_port=/dev/ttyUSB3 --robot.id=bi_starai_cello_follower
 
 #校准文件保存位置可到此处查看对应的校准文件，为JSON文件，对应机械臂各个关节
 - ~/.cache/huggingface/lerobot/calibration/robots
 - ~/.cache/huggingface/lerobot/calibration/teleoperators
 
-#在按顺序插上
+#sb东西有个悬停按钮
 sudo chmod 666 /dev/ttyUSB0 /dev/ttyUSB1 /dev/ttyUSB2 /dev/ttyUSB3
-lerobot-teleoperate \
---robot.type=lerobot_robot_bimanual_follower \
---robot.arm_name=starai_viola \
---robot.left_arm_port=/dev/ttyUSB1 \
---robot.right_arm_port=/dev/ttyUSB3 \
---robot.id=bi_starai_viola_follower \
---teleop.type=lerobot_teleoperator_bimanual_leader \
---teleop.left_arm_port=/dev/ttyUSB0 \
---teleop.right_arm_port=/dev/ttyUSB2 \
---teleop.id=bi_starai_violin_leader \
---display_data=true
+
+#  运行双臂 teleop / follower
+lerobot-teleoperate   --robot.type=lerobot_robot_bimanual_follower   --robot.arm_name=starai_viola   --robot.left_arm_port=/dev/ttyUSB1   --robot.right_arm_port=/dev/ttyUSB3   --robot.id=bi_starai_viola_follower   --teleop.type=lerobot_teleoperator_bimanual_leader   --teleop.left_arm_port=/dev/ttyUSB0   --teleop.right_arm_port=/dev/ttyUSB2   --teleop.id=bi_starai_violin_leader   --display_data=true  //false 主循环频率会立刻飙升
+
+# 添加摄像头
+#运行ls /dev/v4l/by-id/。你会看到一串长长的、带有相机品牌和序列号的路径。
+#在 LeRobot 或 ROS 的配置文件里，不要写 /dev/video0，直接写by-id的长路径
